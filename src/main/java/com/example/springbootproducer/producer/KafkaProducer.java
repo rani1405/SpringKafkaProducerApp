@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,15 +22,32 @@ public class KafkaProducer {
     @Autowired
     KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${topic.name}")
-    public String topicName;
+    @Value("${topic.name1}")
+    public String topicName1;
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void send() {
+    @Value("${topic.name2}")
+    public String topicName2;
+
+//    @EventListener(ApplicationReadyEvent.class)
+    @Async
+    public void sendMessage1() {
 
         for (int i = 0; i < 10; i++) {
-            kafkaTemplate.send(topicName, "Hello-" + i);
+            kafkaTemplate.send(topicName1, "Hello-" + i);
+            log.info("Thread Name in sendMessage1-"+Thread.currentThread().getName());
+            log.info("Message successfully sent!!" + topicName1);
         }
-        log.info("Message successfully sent!!");
+
+    }
+
+    @Async
+    public void sendMessage2() {
+
+        for (int i = 0; i < 10; i++) {
+            kafkaTemplate.send(topicName2, "Hey-" + i);
+            log.info("Thread Name in sendMessage2 -"+Thread.currentThread().getName());
+            log.info("Message successfully sent to topic- " + topicName2);
+        }
+
     }
 }

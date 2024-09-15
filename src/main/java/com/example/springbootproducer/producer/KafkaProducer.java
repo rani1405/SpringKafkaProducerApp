@@ -28,6 +28,9 @@ public class KafkaProducer {
     @Value("${topic.name2}")
     public String topicName2;
 
+    @Value("${topic.name3}")
+    public String topicName3;
+
 //    @EventListener(ApplicationReadyEvent.class)
     @Async
     public void sendMessage1() {
@@ -47,6 +50,18 @@ public class KafkaProducer {
             kafkaTemplate.send(topicName2, "Hey-" + i);
             log.info("Thread Name in sendMessage2 -"+Thread.currentThread().getName());
             log.info("Message successfully sent to topic- " + topicName2);
+        }
+
+    }
+
+
+    @Async
+    public void sendMessage3() {
+
+        for (int i = 0; i < 10; i++) {
+            kafkaTemplate.send(topicName3, "bonjour-" + i);
+            log.info("Thread Name in sendMessage3 -"+Thread.currentThread().getName());
+            log.info("Message successfully sent to topic! " + topicName3);
         }
 
     }

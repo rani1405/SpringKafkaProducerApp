@@ -18,6 +18,7 @@ public class ProducerController {
     public void postEvents() {
         kafkaProducer.sendMessage1();
         kafkaProducer.sendMessage2();
+        kafkaProducer.sendMessage3();
     }
 
 }
